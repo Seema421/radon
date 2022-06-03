@@ -5,72 +5,41 @@ const { indexBy, flatten } = require('underscore');
 const { json } = require('body-parser');
 
 const router = express.Router();
+const player=
+[
+    {"name":"ana","dob":"11/6/1992","gender":"male","city":"punjab","sports":["swimming"]},
+    {"name":"ronak","dob":"15/11/1992","gender":"female","city":"delhi","sports":["cricket"]},
+    {"name":"mansi","dob":"20/9/1992","gender":"male","city":"Patna","sports":["basketball"]},
+    {"name":"pinky","dob":"25/8/1992","gender":"male","city":"Haryana","sports":["kho-kho"]},
+]
 
-router.get('/test-me', function (req, res) {
-    myHelper.printDate()
-    myHelper.getCurrentMonth()
-    myHelper.getCohortData()
-    let firstElement = underscore.first(['Sabiha','Akash','Pritesh'])
-    console.log('The first element received from underscope function is '+firstElement)
-    res.send('My first ever api!')
+router.post('/players', function(req, res){
+  
+    let newPlayer = req.body
+    let newPlayersName = newPlayer.name
+    let isNameRepeated = false
+
+    //let player = players.find(p => p.name == newPlayersName)
+
+    for(let i = 0; i < player.length; i++) {
+        if(player[i].name == newPlayersName) {
+            isNameRepeated = true;
+            break;
+        }
+    }
+
+    //undefined is same as false/ a falsy value
+    if (isNameRepeated) {
+        //Player exists
+        res.send("This player was already added!")
+    } else {
+        //New entry
+        player.push(newPlayer)
+        res.send(player)
+    }
 });
 
 
-router.get('/movies', function(req, res){
-    const movies = ['Titanic','Special 26','Bhagat Singh','Udta Punja','Love Story']
-    console.log('Hit movie lists are '+ movies)//this will print at console
-    res.send(movies)//this will got to user
-     
-
-})
-
-router.get('/movies/:indexNumber', function(req, res){
-    const movies = ['Titanic','Special 26','Bhagat Singh','Udta Punja','Love Story']
-    const movieIndex=req.params.indexNumber
-    let finalMovie= ''
-    if(movieIndex<movies.length){
-        finalMovie=movies[movieIndex];
-    } else {
-        finalMovie=("the movie with index no. doesnt exist")
-    }
-    res.send(finalMovie)// console.log(finalMovie)//y we did not wrote console because we want to send this to user
-    console.log('The request objects is '+ JSON.stringify(req.params))
-    console.log('Movies name is '+ (finalMovie))
-    // res.send('finalMovie')
-    
-})
-
-router.get('/films', function(req, res){
-    const movies = [{'id':1,'name':'The Shinning'},{'id':2,'name':'Incedies'},{'id':3,'name':'Rang De       Basanati'},{'id':4,'name':'Finding Nemo'}]
-    
-  const outcome = console.log(underscore.flatten([{'id':1,'name':'The Shinning'},{'id':2,'name':'Incedies'},{'id':3,'name':'Rang De   Basanati'},{'id':4,'name':'Finding Nemo'}]))
-   
-    res.send(movies)
-   
-    
-})
-
-router.get('/films/:filmid', function(req, res){
-    const movies = [{'id':1,'name':'The Shinning'},{'id':2,'name':'Incedies'},{'id':3,'name':'Rang De       Basanati'},{'id':4,'name':'Finding Nemo'}]
-    const movieid=req.params.filmid
-    let resultMovie=''
-    if (movieid<movies.length){
-        resultMovie=movies[movieid]
-    } else {
-        resultMovie=('This moview does not exist')
-    }
-  
-    res.send(resultMovie)
-    console.log("User is requesting for "+ JSON.stringify(resultMovie))
-   
-    
-})
-
-router.get('/candidates/:canidatesName', function(req, res){
-    console.log('The request objects is '+ JSON.stringify(req.params))
-    console.log('Candidates name is '+req.params.canidatesName)
-    res.send('Done')
-})
 
 
 module.exports = router;
