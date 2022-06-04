@@ -36,6 +36,18 @@ router.get('/candidates/:canidatesName', function(req, res){
     res.send('Done')
 })
 
+//find out missing number and response shoud go in api
+router.get('/missingNumber', function(req, res){
+    let array =[1,2,3,5,6,7]
+    let total=0;
+    for (var i in array){
+        total+=array(i);
+    }
+    let lastDigit=array.pop();
+    let sum=lastDigit(lastDigit+1)/2
+    let missingNumber=(sum-total)
+    res.send([{'data':'missingNumber'}])
+})
 
 module.exports = router;
 // adding this comment for no reason
