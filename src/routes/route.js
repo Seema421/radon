@@ -39,7 +39,33 @@ router.post('/players', function(req, res){
     }
 });
 
+router.get('/missinNumber', function(req, res){
+  let array =[1,2,3,5,6,7]
+  let total=0;
+  for (var i in array){
+      total+=array[i];
+  }
+  let n =array.pop()
+  let sum =n*(n+1)/2
+  let missinNum= (sum-total)
+  console.log(missinNum)
+   res.send({missinNum})
+    }
+);
+router.get('/missinNumber2', function(req, res){
+  let array1=[33,34,,35,37,38]
+  let total=0;
+  for (var y in array1) {
+      total+=array1[y]
+  }
+  let lastDig=array1.pop()
+  let missinNum1=total-lastDig
+  console.log(missinNum1)
 
+     res.send({'data': missinNum1})
+      
+    }
+  );
 
 
 module.exports = router;
