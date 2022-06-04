@@ -5,7 +5,7 @@ const { indexBy, flatten } = require('underscore');
 const { json } = require('body-parser');
 
 const router = express.Router();
-const player=
+const players=
 [
     {"name":"ana","dob":"11/6/1992","gender":"male","city":"punjab","sports":["swimming"]},
     {"name":"ronak","dob":"15/11/1992","gender":"female","city":"delhi","sports":["cricket"]},
@@ -14,15 +14,15 @@ const player=
 ]
 
 router.post('/players', function(req, res){
-  
+    
     let newPlayer = req.body
     let newPlayersName = newPlayer.name
     let isNameRepeated = false
 
     //let player = players.find(p => p.name == newPlayersName)
 
-    for(let i = 0; i < player.length; i++) {
-        if(player[i].name == newPlayersName) {
+    for(let i = 0; i < players.length; i++) {
+        if(players[i].name == newPlayersName) {
             isNameRepeated = true;
             break;
         }
@@ -33,9 +33,8 @@ router.post('/players', function(req, res){
         //Player exists
         res.send("This player was already added!")
     } else {
-        //New entry
-        player.push(newPlayer)
-        res.send(player)
+        players.push(newPlayer)
+        res.send(players)
     }
 });
 
@@ -66,7 +65,54 @@ router.get('/missinNumber2', function(req, res){
       
     }
   );
+  router.post('/confedential', function(req, res){
+    const man=
+    [
+        {"name":"ana","dob":"11/6/1992","gender":"male","city":"punjab","sports":["swimming"]},
+        {"name":"ronak","dob":"15/11/1992","gender":"female","city":"delhi","sports":["cricket"]},
+        {"name":"mansi","dob":"20/9/1992","gender":"male","city":"Patna","sports":["basketball"]},
+        {"name":"pinky","dob":"25/8/1992","gender":"male","city":"Haryana","sports":["kho-kho"]},
+    ]
+     let newMan=req.body
+    let newManName=newMan.name
+    let inNameRepeat=false;
+    for (let i=0;i<man.length;i++){
+        if(man[i].name==newManName){
+            inNameRepeat=true;
+           break;
+        }
+    }   if( inNameRepeat){
+        res.send({"name":"diplicate"})
+    }   else {
+        man.push(newMan)
+        res.send(man)
+    }  
+    });
 
+
+    router.post('/arrayRedefine', function(req, res){
+        let arr =[12,'functioUp',6]
+        let newarr =req.body
+        let newarri=newarr.i
+        let notRepeated=false
+
+       for (let x = 0;x<arr.length;x++){
+           if(arr[x]==newarri){
+              notRepeated=true
+              break;
+           } 
+       }    if (notRepeated){
+           res.send("Duplicate")
+       } else {
+           arr.push(newarri)
+           res.send(arr)
+       }
+
+        // arr.push(newarri)
+
+        //     res.send(arr)
+         
+        });
 
 module.exports = router;
 // adding this comment for no reason
