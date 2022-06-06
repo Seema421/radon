@@ -24,5 +24,7 @@ router.get("/allData", UserController.allData )
 router.post("/createDet8", UserController.allBookData);
 
 router.get("/getBookDetail", UserController.getBookData);
+router.get("/familyData", UserController.getfamilyData);
+router.post("/comFamilyData", UserController.familyData);
 
 module.exports = router;

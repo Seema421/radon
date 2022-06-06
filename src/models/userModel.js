@@ -2,25 +2,36 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
+    // firstName: String,
+    // lastName: String,
+    // mobile: {
+    //     type: String,
+    //     unique: true,
+    //     required: true,
+    // },
+    // age: Number,
+    // gender: {
+    //     type: String,
+    //     enum: ["male", 'female', 'LGBQT']
+    // },
+    // bookName: String,
+    // authorName: {
+    //     type: String,
+    //     required: true
+    // },
+    // category: String,
+    // year: Number
     firstName: String,
     lastName: String,
     mobile: {
-        type: String,
-        unique: true,
         required: true,
+        type: Number
     },
-    age: Number,
-    gender: {
+    likes: {
         type: String,
-        enum: ["male", 'female', 'LGBQT']
-    },
-    bookName: String,
-    authorName: {
-        type: String,
-        required: true
-    },
-    category: String,
-    year: Number
+        enum:[ "music", "dance"]
+    }
+
 
 }, { timestamps: true })
 module.exports = mongoose.model('User', userSchema) //users
