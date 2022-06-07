@@ -19,7 +19,8 @@ const bookSchema = new mongoose.Schema({
         default: 20
     },
     totalPages: Number,
-    stockAvailable: Boolean
+    stockAvailable: Boolean,
+    summary : mongoose.Schema.Types.Mixed
 
 
 }, { timestamps: true });

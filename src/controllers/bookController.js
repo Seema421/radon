@@ -1,3 +1,4 @@
+const e = require("express")
 const bookModel = require("../models/bookModel")
 const BookModel = require("../models/bookModel")
 
@@ -8,23 +9,36 @@ const bookData = async function(req,res){//post
 }
 
 const getBookData=async function(req,res){//get
-    //we want only bookName and author name so we already have data of all books through find out of them using .select we filtered bookName and author name as we dont want id so _id will be zero
-    // let getData= await BookModel.find().select( {bookName: 1, bookAuthor:1, _id:0})
-    //to get detail of aparticular year
-    // let getData= await BookModel.find({year:2017})
-    //we want all the bookName by bookAuthor-Nysha and in the year published 2017 so inside and curly bracket we will write the condition with ,
-    // let getData= await BookModel.find({bookAuthor:"Nysha", year:2017})
-    //we want or condition like either bookautor Nysha or Year 2010
-    //inside find({$or:[{},{}]})
-    // let getData= await BookModel.find({$or : [ {bookAuthor:"Nysha"}, {year:2010}]} )
-    //return books whose sales is gt(greater than)100 and lt 500
-    // let getData= await BookModel.find({sales : {$gt : 100,$lt :500}} )
-    //find book which is published and pages are less than 200/
-    let getData= await BookModel.find( { $and :[{totalPages: {$gt:10}}, {stockAvailable:true}]}  )
-       //ALL BOOK DATA
-    // let getData= await BookModel.find(   )
-    res.send({msg:getData})
-    //ALL BOOK DATA
+    
+    // let particularBook = await BookModel.find()//it gives us all data in an array
+    //let particularBook = await BookModel.findOne()//it gives us ist book that to an object
+    //if we apply condition it will gives us ist result corresponding to that result that too an object
+    //let particularBook = await BookModel.findOne({bookAuthor: "Nysha"})
+    //if we do not have book author in our data base fineOne will send null result to avaoid this we will write condition here
+    let particularBook = await BookModel.findOne({bookAuthor: "Seema"})
+     if (particularBook) res.send({msg: particularBook})
+     else res.send ({msg: "Book Not Valiable"})
+   
+}
+const updateBooks = async function(req,res){//post
+     
+    // let allBook = await BookModel.updateMany( //usually user send and data will get updated
+    //     { bookAuthor: "Tulsi Das"},//condition
+    //     { $set: {bookAuthor:"Seema"}})//update in data
+    //if we want to update specific data
+    // let updateddata =req.body
+    // let allBook = await BookModel.findOneAndUpdate( 
+    // { bookAuthor: "Nysha"},
+    // { $set: updateddata},
+    // {new:true})
+    let updateddata =req.body
+    let allBook = await BookModel.findOneAndUpdate( 
+    { bookAuthor: "ABC"},
+    { $set: updateddata},
+    {new:true,upsert:true})//if we will not give new value upsert it will give null value so upsert create if it wil not found that particular attribute
+    res.send ({msg : allBook})
+
 }
 module.exports.bookData=bookData
 module.exports.getBookData=getBookData
+module.exports.updatebooks=updateBooks
