@@ -1,4 +1,4 @@
-const e = require("express")
+const e = require("express");
 const { mapReduce, find } = require("../models/authorModel")
 const AuthorModel= require("../models/authorModel")
 const BookModel = require("../models/bookModel")
@@ -50,27 +50,28 @@ const authorAgeWise= async function(req,res){//get
 let ag = await AuthorModel.find({age : {$gte:50}}).select({author_name:1,age:1,author_id:1,_id:0})
 let name= ag.map(input=>input.author_name)
 let id1 = ag.map(input=>input.author_id)
-console.log(id1)
+// console.log(id1)
 
-console.log(ag)
+// console.log(ag)
 
 let rating = await BookModel.find({ratings:{$gte:4}})
 let id = rating.map(input=>input.author_id)
-console.log(id)
-// let y =[]
-// for (let i=0;i<id1.length;i++){
-//     let x =id1[i]
-//     let finalResult=await BookModel.find({author_id:x}).select({author_id:1,_id:0})
+// console.log(id)
+let y =[]
+for (let i=0;i<ag.length;i++){
+    let x =ag[i]
+    let finalResult=await AuthorModel.find({id:x}).select({author_name:1,age:1,_id:0})
     
-// y.push(...finalResult)
+y.push(finalResult)
 
-// }
+}
 // console.log(ag)
-// console.log(y)
-// let result= ag.map(input=>input.y)
+console.log(y)
 
+// let result=ag.map(input=>input.y)
 // console.log(result)
-// res.send({msg:ag})
+
+res.send({msg:y})
 
 }
 module.exports.authorAgeWise = authorAgeWise
