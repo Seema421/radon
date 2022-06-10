@@ -47,31 +47,16 @@ console.log(authorName)
 res.send({msg : authorName})
 }
 const authorAgeWise= async function(req,res){//get
-let ag = await AuthorModel.find({age : {$gte:50}}).select({author_name:1,age:1,author_id:1,_id:0})
-let name= ag.map(input=>input.author_name)
-let id1 = ag.map(input=>input.author_id)
-// console.log(id1)
+    let data=req.body
+    let savedData = await BookModel.find({ratings:{$gte:4}})
+    let id = savedData.map(input=>input.author_id)
+    // console.log(id)
+    let age = await AuthorModel.find({$and: [{author_id:id},{age:{$gte:50}}]}).select({author_name:1,age:1,_id:0})
 
-// console.log(ag)
 
-let rating = await BookModel.find({ratings:{$gte:4}})
-let id = rating.map(input=>input.author_id)
-// console.log(id)
-let y =[]
-for (let i=0;i<ag.length;i++){
-    let x =ag[i]
-    let finalResult=await AuthorModel.find({id:x}).select({author_name:1,age:1,_id:0})
-    
-y.push(finalResult)
+    console.log(age)
 
-}
-// console.log(ag)
-console.log(y)
-
-// let result=ag.map(input=>input.y)
-// console.log(result)
-
-res.send({msg:y})
+res.send({msg:age})
 
 }
 module.exports.authorAgeWise = authorAgeWise
