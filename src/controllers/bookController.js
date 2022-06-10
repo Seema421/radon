@@ -134,16 +134,12 @@ console.log(updatedData)
 }
 const updatePrize = async function(req,res){//put
     let data =req.body
-    let rating=await AuthorModel .find({rating : {$gte:3.5}}).select({_id:1})
-    .updateMany(
+    let rating=await AuthorModel .updateMany(
 
-        {price: {$inc:10}},
-        {new:true},
-        {upsert:true}
-    )
-   
-     
-    res.send({msg:"Updated"})
+        {rating : {$gte:3.5}},
+        {$inc: {price:10}},    
+    ) 
+    res.send({msg:rating})
     console.log(rating)
     
     }
