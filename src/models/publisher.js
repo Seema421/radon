@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const publisherSchema = new mongoose.Schema({
-    publisherName:{ type:"String",
-    unique:true},
+    publisherName: "String",
     headquarter: "String"
     
 }, { timestamps: true });

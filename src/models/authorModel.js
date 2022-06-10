@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const authorSchema = new mongoose.Schema({
-    authorName:{ type:"String",
-                unique:true},
+    authorName:"String",
     age : Number,
     address : "String",
     rating : "Number"
