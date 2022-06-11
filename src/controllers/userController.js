@@ -4,6 +4,8 @@ const UserModel= require("../models/userModel")
 const createUser= async function (req, res) {
     let data= req.body
     let savedData= await UserModel.create(data)
+    let date = date.now()
+    console.log(date)
     res.send({msg: savedData})
 }
 
