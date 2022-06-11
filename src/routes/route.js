@@ -7,6 +7,6 @@ const BookController= require("../controllers/bookController")
 const commonMW = require ("../middlewares/commonMiddlewares")
 
 
-router.get("/createBook",commonMW.mid2,BookController.createBook)
+router.get("/createBook",BookController.createBook)
 // router.get("/", commonMW.mid1,UserController.basicCode)
 module.exports = router;
