@@ -15,22 +15,29 @@ mongoose.connect("mongodb+srv://functionup-cohort:G0Loxqc9wFEGyEeJ@cluster0.rzot
 .then( () => console.log("MongoDb is connected"))
 .catch ( err => console.log(err) )
 
-app.use (
-    function (req, res, next) {
-        let currentDay= new Date();
-        let currentTime= currentDay.getTime();+ " "
-                        + (currentDay.getMonth()+1)+ " "
-                        + currentDay.getFullYear()+ " "
-                        + currentDay.getHours()
-                        + currentDay.getMinutes()
-                        + currentDay.getSeconds()
+// app.use (
+//     function (req, res, next) {
+//         let currentDay= new Date();
+//         let currentTime= currentDay.getTime();+ " "
+//                         + (currentDay.getMonth()+1)+ " "
+//                         + currentDay.getFullYear()+ " "
+//                         + currentDay.getHours()
+//                         + currentDay.getMinutes()
+//                         + currentDay.getSeconds()
 
-        let url=req.path
-        let ip = address.ip()
-        console.log (currentDay+currentTime+url+ip);
-        next();
-  }
-  );
+//         let url=req.path
+//         let ip = address.ip()
+//         console.log (currentDay+currentTime+url+ip);
+//         next();
+//   }
+//   );
+
+app.use ( function(req,res,next){
+    console.log("i am GMW")
+    
+    next()
+
+})
 
 app.use('/', route);
 
