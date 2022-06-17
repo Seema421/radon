@@ -77,7 +77,27 @@ let getOtp = async function (req, res) {
         res.status(500).send({ msg: err.message })
     }
 }
+// let getDistrictsid = async function (req, res) {
+//     try {
+//         let districtid = req.params.id
+//         let date = req.params.date
+        
+//         console.log(`body is : ${blahhh} `)
+//         var options = {
+//             method: "post",
+//             url: `https://cdn-api.co-vin.in/api/v2/admin/location/districts​/{state_id}
+//             data: blahhh
+//         }
 
+//         let result = await axios(options)
+//         console.log(result.data)
+//         res.status(200).send({ msg: result.data })
+//     }
+//     catch (err) {
+//         console.log(err)
+//         res.status(500).send({ msg: err.message })
+//     }
+// }
 
 module.exports.getStates = getStates
 module.exports.getDistricts = getDistricts
