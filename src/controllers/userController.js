@@ -1,7 +1,13 @@
 const jwt = require ('jsonwebtoken')
+const { findById } = require('../models/userModel')
 const userModel = require("../models/userModel")
 const UserModel= require("../models/userModel")
 
+const createUser= async function (req, res) {
+    let data= req.body
+    let savedData= await UserModel.create(data)
+    res.send({msg: savedData})
+}
 const loginUser=async function(req,res){
     let userName=req.body.emailId
     let passWord= req.body.password
@@ -10,16 +16,94 @@ const loginUser=async function(req,res){
     //if user is present create the JWT token and send it in response we have to install npm i jsonwebtoken here
     let token = await jwt.sign({userId: user._id.toString()},'functionup-thorium')
     res.send ({status:true, data:token})
-
-
-
 }
-const createUser= async function (req, res) {
-    let data= req.body
-    let savedData= await UserModel.create(data)
-    res.send({msg: savedData})
+ const loginUser2= async function(req,res){
+    let userName=req.body.emailId;
+    let passWord= req.body.password
+    let user = await userModel.findOne({emailId:userName,password:passWord});
+    if (!user) return res.send({msg:"this user does not exist"})
+    let token = await jwt.sign ({userId: user._id.toString()}, 'new_user')
+    res.send({status:true,msg:token})
 }
+ const wallPost = async function(req,res){
+    let token = req.headers ["x-auth-token"];
+    if(!token) return res.send ({msg:"Authentication failed"});
+    let decodedToken =  jwt.verify ( token, 'new_user');
+    console.log(decodedToken)
+    if (!decodedToken) return res.send({msg:"UserName and Password mismatch"});
+    let userIdToBeChecked= req.params.userid
+    let userLoggedIn=decodedToken.userId
+    console.log(userLoggedIn)
+    if (userIdToBeChecked!=decodedToken) return res.send({msg:"Status Falied"})
+    let user = await userModel.findById(req.params.userid)
+    let message = req.body.message
+    let updatedPost=user.posts
+    updatedPost.push(message)
+    let updatedWall= await userModel.findOneAndUpdate(
+        {id: user._id},
+        {posts:updatedPost},
+        {new:true}
+         )
+     res.send({msg:updatedPost})
+}
+const loginUser3 = async function(req,res){
+    let userName=req.body.emailId;
+    let passWord = req.body.password
+    let user = await userModel.findOne({emailId:userName,password:passWord});
+    if (!user) return res.send ({msg :"User does not exist"});
+    let token = await jwt.sign({userId:user._id.toString()}, "iamthebest");
+        res.send({status:true,msg:token})
+}
+const getUserData3 = async function(req,res){
+let token = req.headers["x-auth-token"];
+if (!token) return res.send ({msg:"Authentication failed"});
+let decodedToken =  jwt.verify(token,"iamthebest");
+if(!decodedToken) return res.send ({msg:"UserName and Password does not exist"});
+let id = req.params.userid
+let user = await userModel.findById(id);
+if(!user) return res.send ({msg: "User is not exist"})
+res.send({msg:user})
+}
+const wallPostSahiba = async function(req,res){
+//     let token = req.headers["x-auth-token"]
+//     if (!token) return res.send({msg:"Authentication failed"})
+//     let decodedToken = jwt.verify(token, "iamthebest")
+//     if(!decodedToken) return res.send({msg:"This username and password is mismatch"})
+//     let idtobeVarified = req.params.userid
+//     console.log(idtobeVarified)
+//     let loggedInUser=decodedToken.userId
+//     console.log(loggedInUser)
+//    if (idtobeVarified!=loggedInUser) return res.send ({msg:"You are not authorised to make changes"})
+    let user = await userModel.findById(req.params.userid);
+    let message = req.body.msg
+    let updatedPosts= user.posts
+    updatedPosts.push(message)
+    console.log(updatedPosts)
 
+    let updatedUser = await userModel.findOneAndUpdate(
+        {_id:user._id},
+        {$set:{posts:updatedPosts}},
+        {new:true})
+
+ return res.send({msg:updatedUser})
+}
+const removeSabhia=async function(req,res){
+    // let token = req.headers["x-auth-token"];
+    // if (!token) return res.send({msg:"Authorisation failed"})
+    // let decodedToken = await jwt.verify(token,"iamthebest");
+    // if(!decodedToken) return res.send({msg:"UserName and id is not available"})
+    // let idToBeVarified = req.params.userid;
+    // let loggedInUser=decodedToken.userId
+    // if(idToBeVarified!=loggedInUser) return res.send ({msg:"This is not valid user to remove"})
+    let user = await userModel.findById(req.params.userid)
+    let removeSahibaData= await userModel.findByIdAndUpdate(
+        {_id:user._id},
+        {$set:{isDeleted:true}},
+        {new:true}
+         
+     )
+    res.send({msg:removeSahibaData})
+}
 const getUsersData= async function (req, res) {
     // let token = req.headers ["x-auth-token"]//we have to set token as a x-auth-token in postman as we are testing usually it is set from front end
     // console.log(token)
@@ -74,3 +158,9 @@ module.exports.getUsersData= getUsersData
 module.exports.loginUser=loginUser
 module.exports.updateUser=updateUser
 module.exports.removeUser=removeUser
+module.exports.loginUser2=loginUser2
+module.exports.wallPost=wallPost
+module.exports.loginUser3=loginUser3
+module.exports.getUserData3=getUserData3
+module.exports.wallPostSahiba=wallPostSahiba
+module.exports.removeSabhia=removeSabhia

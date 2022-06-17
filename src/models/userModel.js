@@ -12,16 +12,15 @@ const userSchema = new mongoose.Schema( {
     password: String,
     gender: {
         type: String,
-        enum: ["male", "female", "LGBTQ"] //"falana" will give an error
+        enum: ["male", "female", "LGBTQ"] 
     },
     age: Number,
-    // isIndian: Boolean,
-    // parentsInfo: {
-    //     motherName: String,
-    //     fatherName: String,
-    //     siblingName: String
-    // },
-    // cars: [ String  ]
+    posts: {
+        type: [],
+        default:[]
+    },
+    isDeleated:{type:Boolean,
+    default:false}
 }, { timestamps: true });
 
 module.exports = mongoose.model('FBUser', userSchema) //users
